@@ -2,6 +2,8 @@ package com.gemini.service;
 
 import com.gemini.Entities.Order;
 
+import java.util.List;
+
 public class TradeListenerPrinter implements TradeListener {
   @Override
   public String id() {
@@ -12,7 +14,6 @@ public class TradeListenerPrinter implements TradeListener {
   public void onMatch(Order buyOrders, Order sellOrders) {
     StringBuffer sb = tradeReport(buyOrders, sellOrders);
     System.out.print(sb);
-    return;
   }
 
   private StringBuffer tradeReport(Order buyOrder, Order sellOrder) {
@@ -25,5 +26,22 @@ public class TradeListenerPrinter implements TradeListener {
     sb.append(buyOrder.price()).append(" ");
     sb.append("\n");
     return sb;
+  }
+
+  public StringBuffer tradeReport(List<Order> orders) {
+    StringBuffer sb = new StringBuffer();
+    for (Order o : orders) {
+      sb.append(toString(o));
+    }
+    return sb.toString();
+  }
+
+  private String toString(Order buyOrder) {
+    StringBuffer sb = new StringBuffer();
+    sb.append(buyOrder.parentOrderId()).append(" ");
+    sb.append(buyOrder.side().name()).append(" ");
+    sb.append(buyOrder.quantity()).append(" ");
+    sb.append(buyOrder.price()).append(System.lineSeparator());
+    return sb.toString();
   }
 }

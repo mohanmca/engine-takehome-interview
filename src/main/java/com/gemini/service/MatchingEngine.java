@@ -2,15 +2,12 @@ package com.gemini.service;
 
 import com.gemini.Entities.Order;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 public class MatchingEngine {
 
   private static MatchingEngine engine = null;
-  private final Map<String, OrderBook> orderBookMap = new HashMap<>();
+  private final Map<String, OrderBook> orderBookMap = new TreeMap<>();
   private final Map<String, TradeListener> listeners;
 
   private MatchingEngine() {
@@ -18,7 +15,7 @@ public class MatchingEngine {
   }
 
   private MatchingEngine(TradeListener subscriber) {
-    listeners = new HashMap<>();
+    listeners = new TreeMap<>();
     listeners.put(subscriber.id(), subscriber);
   }
 
@@ -48,5 +45,16 @@ public class MatchingEngine {
 
   public void register(TradeListener subscriber) {
     listeners.put(subscriber.id(), subscriber);
+  }
+
+  public List<Order> getSnapshot() {
+    List<Order> orders = new ArrayList<>();
+    for (Map.Entry<String, OrderBook> kv : orderBookMap.entrySet()) {
+      orders.addAll(kv.getValue().sellOrders);
+    }
+    for (Map.Entry<String, OrderBook> kv : orderBookMap.entrySet()) {
+      orders.addAll(kv.getValue().buyOrders);
+    }
+    return orders;
   }
 }

@@ -44,9 +44,25 @@ public class OrderBook {
         sellOrders.add(s.clone(s.quantity() - b.quantity()));
       }
       int minQty = Math.min(b.quantity(), s.quantity());
-      result =  new ArrayList<>(List.of(b.clone(minQty), s.clone(minQty)));
+      result = new ArrayList<>(List.of(b.clone(minQty), s.clone(minQty)));
     }
     return result;
+  }
+
+  public List<Order> listSellOrders() {
+    List<Order> orders = new ArrayList<>();
+    for (Order o : sellOrders) {
+      orders.add(o);
+    }
+    return orders;
+  }
+
+  public List<Order> listBuyOrders() {
+    List<Order> orders = new ArrayList<>();
+    for (Order o : buyOrders) {
+      orders.add(o);
+    }
+    return orders;
   }
 
   private void remove(String orderId) {}
