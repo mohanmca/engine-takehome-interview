@@ -1,19 +1,20 @@
 package com.gemini.service;
 
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+
 class MatchingEngineTest {
 
-    MatchingEngine engine = MatchingEngine.getInstance();
+  MatchingEngine engine = MatchingEngine.getInstance();
 
-    @org.junit.jupiter.api.BeforeEach
-    void setUp() {
-    }
+  @BeforeEach
+  void setUp() {}
 
-    @org.junit.jupiter.api.AfterEach
-    void tearDown() {
-    }
+  @AfterEach
+  void tearDown() {}
 
-    void placeOrder() {
-        engine.processOrder("12345 BUY BTCUSD 5 10000");
-        //assertEquals(engine.getOrderBook().size(), 1);
-    }
+  void placeOrder() {
+    engine.processOrder("12345 BUY BTCUSD 5 10000");
+    // assertEquals(engine.getOrderBook().size(), 1);
+  }
 }
