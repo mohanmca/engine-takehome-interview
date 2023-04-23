@@ -13,21 +13,23 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class EntitiesTest {
 
-    @Test
-    public void orderComparatorTest() {
-        List<Order> orders = new LinkedList<>(Arrays.asList(
-                new Order("1", Side.BUY, "apple", 1, 2.5f, 4, 5),
-                new Order("1", Side.BUY, "apple", 1, 2.5f, 4, 3)));
-        OrderComparator comparator = new OrderComparator();
-        orders.sort(comparator);
+  @Test
+  public void orderComparatorTest() {
+    List<Order> orders =
+        new LinkedList<>(
+            Arrays.asList(
+                new Order("1", "1", Side.BUY, "apple", 1, 2.5f, 4, 5),
+                new Order("2", "2", Side.BUY, "apple", 1, 2.5f, 4, 3)));
+    OrderComparator comparator = new OrderComparator();
+    orders.sort(comparator);
 
-        assertEquals(orders.get(0).arrivedTime(), 3, "When there is price collision, sort based on arrival time");
-        orders.add(new Order("1", Side.BUY, "apple", 1, 1.5f, 4, 4));
+    assertEquals(
+        orders.get(0).arrivedTime(),
+        3,
+        "When there is price collision, sort based on arrival time");
+    orders.add(new Order("1", "1", Side.BUY, "apple", 1, 1.5f, 4, 4));
 
-        orders.sort(comparator);
-        assertEquals(orders.get(0).price(), 1.5f, 0.0001, "Lowest price as fist order");
-
-    }
-
-
+    orders.sort(comparator);
+    assertEquals(orders.get(0).price(), 1.5f, 0.0001, "Lowest price as fist order");
+  }
 }
