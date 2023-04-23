@@ -4,6 +4,7 @@ import com.gemini.Entities.OrderComparator;
 import com.gemini.Entities.Side;
 
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.PriorityQueue;
 
@@ -13,8 +14,8 @@ public class OrderBook {
 
     String instrumentId;
 
-    OrderComparator comparator = new OrderComparator();
-    OrderComparator sellComparator = (OrderComparator) new OrderComparator().reversed();
+    Comparator<Order> comparator = new OrderComparator();
+    Comparator<Order> sellComparator = new OrderComparator().reversed();
 
     PriorityQueue<Order> buyOrders = new PriorityQueue<>(comparator);
     PriorityQueue<Order> sellOrders = new PriorityQueue<>(sellComparator);
@@ -33,6 +34,8 @@ public class OrderBook {
 
     public List<Order> match() {
         List<Order> result = Collections.emptyList();
+        if (buyOrders.isEmpty() || sellOrders.isEmpty()) return result;
+
         if (buyOrders.peek().price() >= sellOrders.peek().price()) {
             Order b = buyOrders.poll();
             Order s = sellOrders.poll();
