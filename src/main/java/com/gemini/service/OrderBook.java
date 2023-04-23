@@ -3,16 +3,13 @@ package com.gemini.service;
 import com.gemini.Entities.OrderComparator;
 import com.gemini.Entities.Side;
 
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.PriorityQueue;
+import java.util.*;
 
 import static com.gemini.Entities.Order;
 
 public class OrderBook {
 
-  String instrumentId;
+  private final String instrumentId;
 
   Comparator<Order> comparator = new OrderComparator().reversed();
   Comparator<Order> sellComparator = new OrderComparator();
@@ -45,12 +42,9 @@ public class OrderBook {
         buyOrders.add(b.clone(b.quantity() - s.quantity()));
       } else if (b.quantity() < s.quantity()) {
         sellOrders.add(s.clone(s.quantity() - b.quantity()));
-      } else {
-        buyOrders.add(b);
-        sellOrders.add(s);
       }
       int minQty = Math.min(b.quantity(), s.quantity());
-      result = List.of(b.clone(minQty), s.clone(minQty));
+      result =  new ArrayList<>(List.of(b.clone(minQty), s.clone(minQty)));
     }
     return result;
   }

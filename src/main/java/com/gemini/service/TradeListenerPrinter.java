@@ -11,7 +11,7 @@ public class TradeListenerPrinter implements TradeListener {
   @Override
   public void onMatch(Order buyOrders, Order sellOrders) {
     StringBuffer sb = tradeReport(buyOrders, sellOrders);
-    System.out.println(sb);
+    System.out.print(sb);
     return;
   }
 
@@ -22,7 +22,7 @@ public class TradeListenerPrinter implements TradeListener {
     sb.append(buyOrder.parentOrderId()).append(" ");
     sb.append(sellOrder.parentOrderId()).append(" ");
     sb.append(sellOrder.quantity()).append(" ");
-    sb.append(sellOrder.price()).append(" ");
+    sb.append(buyOrder.price()).append(" ");
     sb.append("\n");
     return sb;
   }

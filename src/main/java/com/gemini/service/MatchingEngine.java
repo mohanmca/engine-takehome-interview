@@ -36,8 +36,10 @@ public class MatchingEngine {
       orderBookMap.putIfAbsent(order.instrument(), new OrderBook(order.instrument()));
       orderBookMap.get(order.instrument()).add(order);
       List<Order> matches = orderBookMap.get(order.instrument()).match();
-      if (!matches.isEmpty()) {
+      while (!matches.isEmpty()) {
         listeners.values().stream().forEach(l -> l.onMatch(matches.get(0), matches.get(1)));
+        matches.clear();
+        matches.addAll(orderBookMap.get(order.instrument()).match());
       }
     } else {
       throw new IllegalArgumentException("Invalid trade : " + s);
