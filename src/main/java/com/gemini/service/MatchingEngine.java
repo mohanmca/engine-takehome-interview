@@ -2,20 +2,25 @@ package com.gemini.service;
 
 import com.gemini.Entities.Order;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public class MatchingEngine {
 
     private static MatchingEngine engine = null;
-    private final OrderBook orderBook = new OrderBook();
-    private final List<TradeListener> listeners;
+    private final Map<String, OrderBook> orderBookMap = new HashMap<>();
+    private final Map<String, TradeListener> listeners;
+
+    private MatchingEngine() {
+        this(new TradeListenerDummy());
+    }
 
 
     private MatchingEngine(TradeListener subscriber) {
-        listeners = new ArrayList<>();
-        listeners.add(subscriber);
+        listeners = new HashMap<>();
+        listeners.put(subscriber.id(), subscriber);
     }
 
     public static MatchingEngine getInstance() {
@@ -26,16 +31,22 @@ public class MatchingEngine {
     }
 
     public void placeOrder(String s) {
-        Optional<Order> order = OrderParser.parse(s);
-        if (order.isPresent()) {
-            order.ifPresent(orderBook::add);
+        Optional<Order> optOrder = OrderParser.parse(s);
+        if (optOrder.isPresent()) {
+            Order order = optOrder.get();
+            orderBookMap.putIfAbsent(order.instrument(), new OrderBook(order.instrument()));
+            orderBookMap.get(order.instrument()).add(order);
+            List<Order> matches = orderBookMap.get(order.instrument()).match();
+            if (!matches.isEmpty()) {
+                listeners.values().stream().forEach(l -> l.onMatch(matches.get(0), matches.get(1)));
+            }
         } else {
             throw new IllegalArgumentException("Invalid trade : " + s);
         }
-        List<List<Order>> matches = orderBook.match();
-        if(!matches.isEmpty()){
-            listeners.stream().forEach( l -> l.onMatch( matches.get(0), matches.get(1) ) );
-        }
+    }
+
+    public void register(TradeListener subscriber) {
+        listeners.put(subscriber.id(), subscriber);
     }
 
 

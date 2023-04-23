@@ -23,7 +23,7 @@ public class OrderBook {
         this.instrumentId = instrumentId;
     }
 
-    public List<Order> add(Order order) {
+    public void add(Order order) {
         if (order.side() == Side.BUY) {
             buyOrders.add(order);
         } else {
@@ -31,8 +31,8 @@ public class OrderBook {
         }
     }
 
-    public List<List<Order>> match() {
-        List<List<Order>> result = Collections.emptyList();
+    public List<Order> match() {
+        List<Order> result = Collections.emptyList();
         if (buyOrders.peek().price() >= sellOrders.peek().price()) {
             Order b = buyOrders.poll();
             Order s = sellOrders.poll();
@@ -40,9 +40,12 @@ public class OrderBook {
                 buyOrders.add(b.clone(b.quantity() - s.quantity()));
             } else if (b.quantity() < s.quantity()) {
                 sellOrders.add(s.clone(s.quantity() - b.quantity()));
+            } else {
+                buyOrders.add(b);
+                sellOrders.add(s);
             }
             int minQty = Math.min(b.quantity(), s.quantity());
-            result = List.of(List.of(b.clone(minQty)), List.of(s.clone(minQty)));
+            result = List.of(b.clone(minQty), s.clone(minQty));
         }
         return result;
     }
