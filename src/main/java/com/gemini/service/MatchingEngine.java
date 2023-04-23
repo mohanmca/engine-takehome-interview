@@ -47,6 +47,12 @@ public class MatchingEngine {
     listeners.put(subscriber.id(), subscriber);
   }
 
+  public void printSnapshot() {
+    List<Order> orders = getSnapshot();
+    String report = OrderReportFormatter.INSTANCE.format(orders);
+    System.err.println(report);
+  }
+
   public List<Order> getSnapshot() {
     List<Order> orders = new ArrayList<>();
     for (Map.Entry<String, OrderBook> kv : orderBookMap.entrySet()) {

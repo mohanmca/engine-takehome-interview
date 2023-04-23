@@ -9,5 +9,7 @@ public class Main {
       engine.placeOrder(line);
     }
 
+    engine.printSnapshot();
+
   }
 }
