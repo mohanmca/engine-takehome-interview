@@ -14,8 +14,8 @@ public class OrderBook {
 
   String instrumentId;
 
-  Comparator<Order> comparator = new OrderComparator();
-  Comparator<Order> sellComparator = new OrderComparator().reversed();
+  Comparator<Order> comparator = new OrderComparator().reversed();
+  Comparator<Order> sellComparator = new OrderComparator();
 
   PriorityQueue<Order> buyOrders = new PriorityQueue<>(comparator);
   PriorityQueue<Order> sellOrders = new PriorityQueue<>(sellComparator);
@@ -36,7 +36,9 @@ public class OrderBook {
     List<Order> result = Collections.emptyList();
     if (buyOrders.isEmpty() || sellOrders.isEmpty()) return result;
 
-    if (buyOrders.peek().price() >= sellOrders.peek().price()) {
+    Order highestBid = buyOrders.peek();
+    Order lowestOffer = sellOrders.peek();
+    if (highestBid.price() >= lowestOffer.price()) {
       Order b = buyOrders.poll();
       Order s = sellOrders.poll();
       if (b.quantity() > s.quantity()) {

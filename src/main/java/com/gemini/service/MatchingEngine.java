@@ -14,7 +14,7 @@ public class MatchingEngine {
   private final Map<String, TradeListener> listeners;
 
   private MatchingEngine() {
-    this(new TradeListenerDummy());
+    this(new TradeListenerPrinter());
   }
 
   private MatchingEngine(TradeListener subscriber) {

@@ -20,8 +20,9 @@ public class TradeListenerPrinter implements TradeListener {
     sb.append("TRADE ");
     sb.append(buyOrder.instrument()).append(" ");
     sb.append(buyOrder.parentOrderId()).append(" ");
-    sb.append(sellOrder.parentOrderId());
-    sb.append(sellOrder.quantity());
+    sb.append(sellOrder.parentOrderId()).append(" ");
+    sb.append(sellOrder.quantity()).append(" ");
+    sb.append(sellOrder.price()).append(" ");
     sb.append("\n");
     return sb;
   }
