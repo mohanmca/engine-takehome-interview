@@ -7,8 +7,12 @@ public interface Entities {
         BUY, SELL
     }
 
-    record Order(String orderId, Side side, String instrument, int quantity, float price, long orderedTime,
+    record Order(String orderId, String parentOrderId, Side side, String instrument, int quantity, float price,
+                 long orderedTime,
                  long arrivedTime) {
+        public Order clone(int withQty) {
+            return new Order(orderId + "_1", orderId, side, instrument, withQty, price, System.currentTimeMillis(), System.currentTimeMillis());
+        }
     }
 
     class OrderComparator implements Comparator<Order> {
