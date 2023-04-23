@@ -7,6 +7,7 @@ public class Main {
     MatchingEngine engine = MatchingEngine.getInstance();
     for (String line : lines) {
       engine.placeOrder(line);
+      Thread.sleep(1000);
     }
 
     engine.printSnapshot();

@@ -4,7 +4,7 @@ import java.util.Comparator;
 
 public interface Entities {
     enum Side {
-        BUY, SELL
+        SELL, BUY
     }
 
     record Order(String orderId, String parentOrderId, Side side, String instrument, int quantity, float price,
@@ -26,5 +26,7 @@ public interface Entities {
                     .compare(order, anotherOrder);
         }
     }
+
+
 
 }

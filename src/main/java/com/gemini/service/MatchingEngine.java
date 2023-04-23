@@ -56,11 +56,18 @@ public class MatchingEngine {
   public List<Order> getSnapshot() {
     List<Order> orders = new ArrayList<>();
     for (Map.Entry<String, OrderBook> kv : orderBookMap.entrySet()) {
-      orders.addAll(kv.getValue().sellOrders);
+      orders.addAll(kv.getValue().listSellOrders());
     }
+
+
+
     for (Map.Entry<String, OrderBook> kv : orderBookMap.entrySet()) {
-      orders.addAll(kv.getValue().buyOrders);
+      orders.addAll(kv.getValue().listBuyOrders());
     }
+
+    orders.sort(  Comparator.comparing( Order::side).thenComparing(Order::arrivedTime) );
+
+
     return orders;
   }
 }

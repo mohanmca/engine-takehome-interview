@@ -54,6 +54,7 @@ public class OrderBook {
     for (Order o : sellOrders) {
       orders.add(o);
     }
+    orders.sort(Comparator.comparingLong(Order::arrivedTime));
     return orders;
   }
 
@@ -62,6 +63,7 @@ public class OrderBook {
     for (Order o : buyOrders) {
       orders.add(o);
     }
+    orders.sort(Comparator.comparingLong(Order::arrivedTime));
     return orders;
   }
 

@@ -1,21 +1,21 @@
 package com.gemini.service;
 
-import com.gemini.Entities;
+import com.gemini.Entities.Order;
 
 import java.util.List;
 
 public enum OrderReportFormatter {
   INSTANCE;
 
-  public String format(List<Entities.Order> orders) {
+  public String format(List<Order> orders) {
     StringBuffer sb = new StringBuffer();
-    for (Entities.Order o : orders) {
+    for (Order o : orders) {
       sb.append(toString(o));
     }
     return sb.toString();
   }
 
-  private String toString(Entities.Order buyOrder) {
+  private String toString(Order buyOrder) {
     StringBuffer sb = new StringBuffer();
     sb.append(buyOrder.parentOrderId()).append(" ");
     sb.append(buyOrder.side().name()).append(" ");
