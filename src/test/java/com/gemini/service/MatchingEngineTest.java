@@ -13,7 +13,7 @@ class MatchingEngineTest {
     }
 
     void placeOrder() {
-        engine.placeOrder("12345 BUY BTCUSD 5 10000");
+        engine.processOrder("12345 BUY BTCUSD 5 10000");
         //assertEquals(engine.getOrderBook().size(), 1);
     }
 }

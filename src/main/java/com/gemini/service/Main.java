@@ -6,8 +6,7 @@ public class Main {
     String[] lines = input.split(System.lineSeparator());
     MatchingEngine engine = MatchingEngine.getInstance();
     for (String line : lines) {
-      engine.placeOrder(line);
-      Thread.sleep(1000);
+      engine.processOrder(line);
     }
 
     engine.printSnapshot();
