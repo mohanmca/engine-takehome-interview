@@ -11,7 +11,7 @@ public interface Entities {
                  long orderedTime,
                  long arrivedTime) {
         public Order clone(int withQty) {
-            return new Order(orderId + "_1", orderId, side, instrument, withQty, price, System.currentTimeMillis(), System.currentTimeMillis());
+            return new Order(orderId + "_1", parentOrderId, side, instrument, withQty, price, System.currentTimeMillis(), System.currentTimeMillis());
         }
     }
 
