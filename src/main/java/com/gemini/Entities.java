@@ -26,7 +26,4 @@ public interface Entities {
                     .compare(order, anotherOrder);
         }
     }
-
-
-
 }

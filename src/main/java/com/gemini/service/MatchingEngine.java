@@ -10,6 +10,36 @@ public class MatchingEngine {
   private final Map<String, OrderBook> orderBookMap = new TreeMap<>();
   private final Map<String, TradeListener> listeners = new TreeMap<>();
 
+  public void processOrder(String orderStr) {
+    Optional<Order> optOrder = OrderParser.parse(orderStr);
+    if (optOrder.isEmpty())
+      throw new IllegalArgumentException(String.format("Invalid trade : [%s]", orderStr));
+
+    Order order = optOrder.get();
+    String orderInstrument = order.instrument();
+    addToOrderBook(orderInstrument, order);
+    matchOrder(orderInstrument);
+  }
+
+  public void matchOrder(String instrument) {
+    OrderBook orderBook = orderBookMap.get(instrument);
+    List<Order> matchedOrders = orderBook.match();
+    if (matchedOrders.isEmpty()) {
+      return;
+    }
+    listeners.values().forEach(l -> l.onMatch(matchedOrders.get(0), matchedOrders.get(1)));
+    matchOrder(instrument);
+  }
+
+  private void addToOrderBook(String orderInstrument, Order order) {
+    orderBookMap.putIfAbsent(orderInstrument, new OrderBook(orderInstrument));
+    orderBookMap.get(orderInstrument).add(order);
+  }
+
+  public void register(TradeListener subscriber) {
+    listeners.put(subscriber.id(), subscriber);
+  }
+
   private MatchingEngine() {
     this(new TradeListenerPrinter());
   }
@@ -27,25 +57,6 @@ public class MatchingEngine {
 
   private void initializeMatchingListener(TradeListener listener) {
     listeners.put(listener.id(), listener);
-  }
-
-  public void processOrder(String s) {
-    Optional<Order> optOrder = OrderParser.parse(s);
-    if (optOrder.isEmpty()) throw new IllegalArgumentException("Invalid trade : " + s);
-
-    Order order = optOrder.get();
-    orderBookMap.putIfAbsent(order.instrument(), new OrderBook(order.instrument()));
-    orderBookMap.get(order.instrument()).add(order);
-    List<Order> matches = orderBookMap.get(order.instrument()).match();
-    while (!matches.isEmpty()) {
-      listeners.values().stream().forEach(l -> l.onMatch(matches.get(0), matches.get(1)));
-      matches.clear();
-      matches.addAll(orderBookMap.get(order.instrument()).match());
-    }
-  }
-
-  public void register(TradeListener subscriber) {
-    listeners.put(subscriber.id(), subscriber);
   }
 
   public void printSnapshot() {
@@ -67,5 +78,9 @@ public class MatchingEngine {
     orders.sort(Comparator.comparing(Order::side).thenComparing(Order::arrivedTime));
 
     return orders;
+  }
+
+  public Map<String, OrderBook> getOrderBook() {
+    return orderBookMap;
   }
 }
