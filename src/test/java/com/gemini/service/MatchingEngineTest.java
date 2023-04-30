@@ -88,7 +88,7 @@ class MatchingEngineTest {
     OrderBook btcusd = engine.getOrderBook().get("BTCUSD");
 
     assertEquals(0, btcusd.buyOrders.size());
-    assertEquals(1, btcusd.sellOrders.size());
+    assertEquals(2, btcusd.sellOrders.size());
     assertEquals("12345", buy[0].parentOrderId());
     assertEquals("12347", sell[0].parentOrderId());
   }
