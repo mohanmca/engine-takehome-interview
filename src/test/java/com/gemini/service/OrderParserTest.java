@@ -11,6 +11,12 @@ import static org.junit.jupiter.api.Assertions.*;
 class OrderParserTest {
 
     @Test
+    public void testInvalidOrder() {
+        Optional<Order> parsedResult = OrderParser.parse("BUY BTCUSD BUY BTCUSD BUY");
+        assertEquals(Optional.empty(), parsedResult, "Order should be fail to process");
+    }
+
+    @Test
     public void testOrderParser() {
         Optional<Order> parsedResult = OrderParser.parse("12345 BUY BTCUSD 5 10000");
         if (parsedResult.isEmpty()) {
