@@ -3,8 +3,8 @@ package com.gemini.service;
 
 import java.util.Optional;
 
-import static com.gemini.Entities.Order;
-import static com.gemini.Entities.Side;
+import static com.gemini.model.Entities.Order;
+import static com.gemini.model.Entities.Side;
 
 public class OrderParser {
     public static Optional<Order> parse(String order) {

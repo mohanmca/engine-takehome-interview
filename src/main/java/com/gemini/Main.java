@@ -1,4 +1,6 @@
-package com.gemini.service;
+package com.gemini;
+
+import com.gemini.service.MatchingEngine;
 
 public class Main {
   public static void main(String[] args) throws Exception {

@@ -1,6 +1,6 @@
 package com.gemini.service;
 
-import com.gemini.Entities.Order;
+import com.gemini.model.Entities.Order;
 
 import java.util.*;
 

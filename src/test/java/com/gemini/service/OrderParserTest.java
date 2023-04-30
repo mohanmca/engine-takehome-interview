@@ -1,11 +1,11 @@
 package com.gemini.service;
 
-import com.gemini.Entities;
+import com.gemini.model.Entities;
 import org.junit.jupiter.api.Test;
 
 import java.util.Optional;
 
-import static com.gemini.Entities.Order;
+import static com.gemini.model.Entities.Order;
 import static org.junit.jupiter.api.Assertions.*;
 
 class OrderParserTest {

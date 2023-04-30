@@ -1,8 +1,6 @@
 package com.gemini.service;
 
-import com.gemini.Entities.Order;
-
-import java.util.List;
+import com.gemini.model.Entities.Order;
 
 public class TradeListenerPrinter implements TradeListener {
   @Override

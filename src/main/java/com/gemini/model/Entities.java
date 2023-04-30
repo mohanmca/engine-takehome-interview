@@ -1,4 +1,4 @@
-package com.gemini;
+package com.gemini.model;
 
 import java.util.Comparator;
 

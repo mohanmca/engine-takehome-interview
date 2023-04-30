@@ -1,8 +1,8 @@
 package com.gemini;
 
-import com.gemini.Entities.Order;
-import com.gemini.Entities.OrderComparator;
-import com.gemini.Entities.Side;
+import com.gemini.model.Entities.Order;
+import com.gemini.model.Entities.OrderComparator;
+import com.gemini.model.Entities.Side;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;

@@ -1,6 +1,6 @@
 package com.gemini.service;
 
-import com.gemini.Entities;
+import com.gemini.model.Entities;
 
 public class TradeListenerDummy implements TradeListener {
   @Override

@@ -1,11 +1,11 @@
 package com.gemini.service;
 
-import com.gemini.Entities.OrderComparator;
-import com.gemini.Entities.Side;
+import com.gemini.model.Entities.OrderComparator;
+import com.gemini.model.Entities.Side;
 
 import java.util.*;
 
-import static com.gemini.Entities.Order;
+import static com.gemini.model.Entities.Order;
 
 public class OrderBook {
 

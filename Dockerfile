@@ -6,5 +6,5 @@ RUN apt-get -y update \
 COPY ./ /app
 COPY sample_input.txt /app
 RUN cd /app && mvn package
-#RUN mvn exec:java -Dexec.mainClass="com.gemini.service.Main" < sample_input.txt
+#RUN mvn exec:java -Dexec.mainClass="com.gemini.Main" < sample_input.txt
 ENTRYPOINT ["/app/execute.sh"]
