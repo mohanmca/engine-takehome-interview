@@ -11,10 +11,10 @@ public class OrderBook {
 
   private final String instrumentId;
 
-  Comparator<Order> comparator = new OrderComparator().reversed();
+  Comparator<Order> buyComparator = new OrderComparator().reversed();
   Comparator<Order> sellComparator = new OrderComparator();
 
-  PriorityQueue<Order> buyOrders = new PriorityQueue<>(comparator);
+  PriorityQueue<Order> buyOrders = new PriorityQueue<>(buyComparator);
   PriorityQueue<Order> sellOrders = new PriorityQueue<>(sellComparator);
 
   public OrderBook(String instrumentId) {
