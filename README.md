@@ -17,7 +17,7 @@
 * ```./test.sh```
 
 ## How to execute matching engine with sample input
-* ``` cat sample_input.txt | ./run.sh```
+* ```cat sample_input.txt | ./run.sh```
 
 ## How much time spent on this project
 * I should have taken at-least 12 hours

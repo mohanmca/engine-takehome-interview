@@ -5,4 +5,5 @@ RUN apt-get -y update \
   && apt-get clean
 COPY . /app
 RUN cp /app/bin/*.sh /app/
+RUN mvn -f /app/pom.xml package -Dmaven.test.skip=true
 ENTRYPOINT ["/app/execute_test.sh"]
