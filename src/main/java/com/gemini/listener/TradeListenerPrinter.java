@@ -11,7 +11,7 @@ public class TradeListenerPrinter implements TradeListener {
     @Override
     public void onMatch(Order buyOrders, Order sellOrders) {
         StringBuffer sb = tradeReport(buyOrders, sellOrders);
-        System.err.println(sb.toString());
+        System.err.println(sb);
     }
 
     private StringBuffer tradeReport(Order buyOrder, Order sellOrder) {

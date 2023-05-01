@@ -44,7 +44,6 @@ public class MatchingEngine {
         }
     }
 
-
     public void register(TradeListener subscriber) {
         listeners.put(subscriber.id(), subscriber);
     }

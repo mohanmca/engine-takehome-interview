@@ -16,10 +16,10 @@ public enum OrderReportFormatter {
     }
 
     private String toString(Order buyOrder) {
-      return buyOrder.parentOrderId() + " " +
-              buyOrder.side().name() + " " +
-              buyOrder.instrument() + " " +
-              buyOrder.quantity() + " " +
-              buyOrder.price() + System.lineSeparator();
+        return buyOrder.parentOrderId() + " " +
+                buyOrder.side().name() + " " +
+                buyOrder.instrument() + " " +
+                buyOrder.quantity() + " " +
+                buyOrder.price() + System.lineSeparator();
     }
 }
