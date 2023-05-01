@@ -68,7 +68,6 @@ public class OrderBook {
         return Optional.ofNullable(unfilledOrder);
     }
 
-
     public List<Order> listSellOrders() {
         List<Order> orders = new ArrayList<>(sellOrders);
         orders.sort(Comparator.comparingLong(Order::arrivedTime));

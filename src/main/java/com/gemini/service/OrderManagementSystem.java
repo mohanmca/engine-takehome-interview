@@ -9,16 +9,10 @@ public class OrderManagementSystem {
     private final Map<String, OrderBook> orderBookMap = new TreeMap<>();
 
     private OrderManagementSystem() {
-
     }
 
     public static OrderManagementSystem getInstance() {
         return manager;
-    }
-
-    public void addToOrderBook(String orderInstrument, Order order) {
-        orderBookMap.putIfAbsent(orderInstrument, new OrderBook(orderInstrument));
-        orderBookMap.get(orderInstrument).add(order);
     }
 
     public Optional<Order> processOrder(String orderStr) {
@@ -31,6 +25,33 @@ public class OrderManagementSystem {
         addToOrderBook(orderInstrument, order);
 
         return optOrder;
+    }
+
+    public List<List<Order>> matchOrder(String instrument) {
+        List<List<Order>> result = new ArrayList<>();
+        matchOrder(instrument, result);
+        return result;
+    }
+
+    private List<List<Order>> matchOrder(String instrument, List<List<Order>> accumulator) {
+        OrderBook orderBook = orderBookMap.get(instrument);
+        List<Order> matchedOrders = orderBook.match();
+        if (matchedOrders.isEmpty()) return accumulator;
+        accumulator.add(matchedOrders);
+        return matchOrder(instrument, accumulator);
+    }
+
+    public void addToOrderBook(String orderInstrument, Order order) {
+        orderBookMap.putIfAbsent(orderInstrument, new OrderBook(orderInstrument));
+        orderBookMap.get(orderInstrument).add(order);
+    }
+
+    public OrderBook get(String instrument) {
+        return orderBookMap.get(instrument);
+    }
+
+    public void clear() {
+        orderBookMap.clear();
     }
 
     public List<Order> getSnapshot() {
@@ -48,25 +69,4 @@ public class OrderManagementSystem {
         return orders;
     }
 
-    public List<List<Order>> matchOrder(String instrument) {
-        List<List<Order>> result = new ArrayList<>();
-        matchOrder(instrument, result);
-        return result;
-    }
-
-    private List<List<Order>> matchOrder(String instrument, List<List<Order>> accumulator) {
-        OrderBook orderBook = orderBookMap.get(instrument);
-        List<Order> matchedOrders = orderBook.match();
-        if (matchedOrders.isEmpty()) return accumulator;
-        accumulator.add(matchedOrders);
-        return matchOrder(instrument, accumulator);
-    }
-
-    public OrderBook get(String instrument) {
-        return orderBookMap.get(instrument);
-    }
-
-    public void clear() {
-        orderBookMap.clear();
-    }
 }
