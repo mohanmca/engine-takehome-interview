@@ -1,4 +1,4 @@
-package com.gemini.service;
+package com.gemini.listener;
 
 import com.gemini.model.Entities.Order;
 
@@ -22,7 +22,6 @@ public class TradeListenerPrinter implements TradeListener {
         sb.append(sellOrder.parentOrderId()).append(" ");
         sb.append(sellOrder.quantity()).append(" ");
         sb.append(buyOrder.price()).append(" ");
-        sb.append("\n");
         return sb;
     }
 

@@ -5,23 +5,21 @@ import com.gemini.model.Entities.Order;
 import java.util.List;
 
 public enum OrderReportFormatter {
-  INSTANCE;
+    INSTANCE;
 
-  public String format(List<Order> orders) {
-    StringBuffer sb = new StringBuffer();
-    for (Order o : orders) {
-      sb.append(toString(o));
+    public String format(List<Order> orders) {
+        StringBuilder sb = new StringBuilder();
+        for (Order o : orders) {
+            sb.append(toString(o));
+        }
+        return sb.toString();
     }
-    return sb.toString();
-  }
 
-  private String toString(Order buyOrder) {
-    StringBuffer sb = new StringBuffer();
-    sb.append(buyOrder.parentOrderId()).append(" ");
-    sb.append(buyOrder.side().name()).append(" ");
-    sb.append(buyOrder.instrument()).append(" ");
-    sb.append(buyOrder.quantity()).append(" ");
-    sb.append(buyOrder.price()).append(System.lineSeparator());
-    return sb.toString();
-  }
+    private String toString(Order buyOrder) {
+      return buyOrder.parentOrderId() + " " +
+              buyOrder.side().name() + " " +
+              buyOrder.instrument() + " " +
+              buyOrder.quantity() + " " +
+              buyOrder.price() + System.lineSeparator();
+    }
 }

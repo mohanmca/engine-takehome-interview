@@ -1,86 +1,67 @@
 package com.gemini.service;
 
+import com.gemini.listener.TradeListener;
+import com.gemini.listener.TradeListenerPrinter;
+import com.gemini.model.Entities;
 import com.gemini.model.Entities.Order;
 
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.TreeMap;
 
 public class MatchingEngine {
 
-  private static MatchingEngine engine = null;
-  private final Map<String, OrderBook> orderBookMap = new TreeMap<>();
-  private final Map<String, TradeListener> listeners = new TreeMap<>();
+    private static MatchingEngine engine = null;
+    private final Map<String, TradeListener> listeners = new TreeMap<>();
+    private final OrderManagementSystem oms;
 
-  public void processOrder(String orderStr) {
-    Optional<Order> optOrder = OrderParser.parse(orderStr);
-    if (optOrder.isEmpty())
-      throw new IllegalArgumentException(String.format("Invalid trade : [%s]", orderStr));
-
-    Order order = optOrder.get();
-    String orderInstrument = order.instrument();
-    addToOrderBook(orderInstrument, order);
-    matchOrder(orderInstrument);
-  }
-
-  public void matchOrder(String instrument) {
-    OrderBook orderBook = orderBookMap.get(instrument);
-    List<Order> matchedOrders = orderBook.match();
-    if (matchedOrders.isEmpty()) {
-      return;
-    }
-    listeners.values().forEach(l -> l.onMatch(matchedOrders.get(0), matchedOrders.get(1)));
-    matchOrder(instrument);
-  }
-
-  private void addToOrderBook(String orderInstrument, Order order) {
-    orderBookMap.putIfAbsent(orderInstrument, new OrderBook(orderInstrument));
-    orderBookMap.get(orderInstrument).add(order);
-  }
-
-  public void register(TradeListener subscriber) {
-    listeners.put(subscriber.id(), subscriber);
-  }
-
-  private MatchingEngine() {
-    this(new TradeListenerPrinter());
-  }
-
-  private MatchingEngine(TradeListener listener) {
-    initializeMatchingListener(listener);
-  }
-
-  public static MatchingEngine getInstance() {
-    if (engine == null) {
-      engine = new MatchingEngine();
-    }
-    return engine;
-  }
-
-  private void initializeMatchingListener(TradeListener listener) {
-    listeners.put(listener.id(), listener);
-  }
-
-  public void printSnapshot() {
-    List<Order> orders = getSnapshot();
-    String report = OrderReportFormatter.INSTANCE.format(orders);
-    System.err.println(report);
-  }
-
-  public List<Order> getSnapshot() {
-    List<Order> orders = new ArrayList<>();
-    for (Map.Entry<String, OrderBook> kv : orderBookMap.entrySet()) {
-      orders.addAll(kv.getValue().listSellOrders());
+    private MatchingEngine() {
+        this(new TradeListenerPrinter(), OrderManagementSystem.getInstance());
     }
 
-    for (Map.Entry<String, OrderBook> kv : orderBookMap.entrySet()) {
-      orders.addAll(kv.getValue().listBuyOrders());
+    private MatchingEngine(TradeListener listener, OrderManagementSystem orderBookManager) {
+        this.oms = orderBookManager;
+        initializeMatchingListener(listener);
     }
 
-    orders.sort(Comparator.comparing(Order::side).thenComparing(Order::arrivedTime));
+    public static MatchingEngine getInstance() {
+        if (engine == null) {
+            engine = new MatchingEngine();
+        }
+        return engine;
+    }
 
-    return orders;
-  }
+    public void processOrder(String orderStr) {
+        Optional<Order> optOrder = oms.processOrder(orderStr);
+        optOrder.ifPresent(order -> processMatches(order.instrument()));
+    }
 
-  public Map<String, OrderBook> getOrderBook() {
-    return orderBookMap;
-  }
+    private void processMatches(String orderInstrument) {
+        List<List<Order>> result = oms.matchOrder(orderInstrument);
+        for (List<Order> matches : result) {
+            listeners.values().forEach(l -> l.onMatch(matches.get(0), matches.get(1)));
+        }
+    }
+
+
+    public void register(TradeListener subscriber) {
+        listeners.put(subscriber.id(), subscriber);
+    }
+
+    public void printSnapshot() {
+        List<Entities.Order> orders = oms.getSnapshot();
+        String report = OrderReportFormatter.INSTANCE.format(orders);
+        System.err.printf("\n%s\n", report);
+    }
+
+    public OrderManagementSystem oms() {
+        return oms;
+    }
+
+    private void initializeMatchingListener(TradeListener listener) {
+        listeners.put(listener.id(), listener);
+    }
+
+
 }

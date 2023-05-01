@@ -7,9 +7,10 @@ import java.util.*;
 
 import static com.gemini.model.Entities.Order;
 
+/**
+ * OrderBook for one particular instrument
+ */
 public class OrderBook {
-
-    private final String instrumentId;
 
     Comparator<Order> buyComparator = new OrderComparator().reversed();
     Comparator<Order> sellComparator = new OrderComparator();
@@ -18,7 +19,6 @@ public class OrderBook {
     PriorityQueue<Order> sellOrders = new PriorityQueue<>(sellComparator);
 
     public OrderBook(String instrumentId) {
-        this.instrumentId = instrumentId;
     }
 
     public void add(Order order) {
