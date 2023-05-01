@@ -1,2 +1,2 @@
 #!/bin/bash
-docker build -t gemini_interview . && docker run -i --rm gemini_interview /app/execute.sh
+docker build -t gemini_interview . && docker run -i --entrypoint /app/execute.sh --rm gemini_interview

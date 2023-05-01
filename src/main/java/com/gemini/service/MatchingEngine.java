@@ -33,8 +33,12 @@ public class MatchingEngine {
     }
 
     public void processOrder(String orderStr) {
-        Optional<Order> optOrder = oms.processOrder(orderStr);
-        optOrder.ifPresent(order -> processMatches(order.instrument()));
+        try {
+            Optional<Order> optOrder = oms.processOrder(orderStr);
+            optOrder.ifPresent(order -> processMatches(order.instrument()));
+        } catch (Exception e) {
+            System.err.printf("Error processing an order, and ignoring %s: \n", orderStr);
+        }
     }
 
     private void processMatches(String orderInstrument) {
