@@ -6,7 +6,8 @@
   * POC to write basic solution
   * Ensure solution is readable and testable
 * Solution works only with single-thread environment, would fail on multi-threaded environment
-* Try to use simple functional interface where-ever possible
+* Try to use simple functional interface wherever possible
+* Ensure compilation and test pipeline happens within docker container
 
 
 ## How to run test-case
